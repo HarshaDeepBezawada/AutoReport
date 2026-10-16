@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autoreport"
+version = "0.1.0"
+description = "Automated Report and Analytics Generator"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "typer",
+    "pandas",
+    "numpy",
+    "matplotlib",
+    "plotly",
+    "PyYAML",
+    "Jinja2",
+    "reportlab",
+    "APScheduler",
+    "openpyxl",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+
+[project.scripts]
+autoreport = "autoreport.cli:app"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
