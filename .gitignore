@@ -1,0 +1,25 @@
+# Python cache files
+
+**pycache**/
+*.py[cod]
+
+# Virtual environment
+
+venv/
+.venv/
+
+# Test and coverage files
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build and installation files
+
+build/
+dist/
+*.egg-info/
+
+# Generated reports
+
+reports/
