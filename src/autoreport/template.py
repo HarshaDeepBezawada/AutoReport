@@ -254,7 +254,7 @@ def build_report_data(tpl: ReportTemplate, df: pd.DataFrame) -> list[dict[str, A
                         {"label": "Change (%)", "value": _fmt(cmp["growth_pct"], "percent")},
                     ]
         elif sec.type == "narrative":
-            summary_sentences = [f"Automated intelligence summary across {len(df):,} records."]
+            summary_sentences = [f"Executive performance summary across {len(df):,} records."]
             if "metric" in o and o["metric"] in df.columns:
                 m = o["metric"]
                 tot = df[m].sum() if pd.api.types.is_numeric_dtype(df[m]) else 0

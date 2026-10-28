@@ -273,11 +273,11 @@ AutoReport/
 │   ├── hr.xlsx                          # HR personnel data (Excel)
 │   ├── inventory.json                   # Inventory records (JSON)
 │   └── inventory.db                     # SQLite database copy
+├── demo/                                # Project demonstration records
+│   └── .gitkeep
 ├── docs/                                # Documentation
 │   ├── PROJECT_DOCUMENTATION.md         # Master technical audit & compliance report
-│   ├── USER_GUIDE.md                    # CLI reference manual & template authoring guide
-│   ├── DEMO.md                          # 5-minute timed demo cue sheet & screen script
-│   └── DEMO_SCRIPT.md                   # Detailed demonstration walkthrough
+│   └── USER_GUIDE.md                    # CLI reference manual & template authoring guide
 ├── sample_reports/                      # Pre-generated deliverables
 │   ├── sales.html / sales.pdf
 │   ├── hr.html / hr.pdf
@@ -326,7 +326,7 @@ AutoReport/
 
 1. **One Chart Spec, Two Renderers**: Rather than duplicating chart logic for web and print, each YAML chart definition is fed to both Matplotlib (for vector/raster PDF rendering) and Plotly (for interactive HTML).
 2. **Offline-First HTML Reports**: By default (`--offline`), generated HTML reports embed `plotly.offline.get_plotlyjs()`, producing fully self-contained reports that open cleanly without internet access in secure corporate environments. For lightweight file sizes (~50 KB), `--online` switches to the official CDN link.
-3. **Automated Executive Narratives & Comparative Benchmarks**: Reports auto-generate synthesized natural-language summaries and period-over-period / segment-over-segment comparative benchmarks, fulfilling executive intelligence requirements.
+3. **Automated Executive Narratives & Comparative Benchmarks**: Reports auto-generate synthesized natural-language summaries and period-over-period / segment-over-segment comparative benchmarks, fulfilling operational business reporting requirements.
 4. **Partial Period Protection**: In trend analysis, the final time period is automatically truncated if the dataset ends mid-month, preventing false drops in monthly trend curves (`drop_partial: false` disables this).
 5. **Security & Data Handling**:
    - Jinja2 HTML auto-escaping prevents script injection from raw data strings.
@@ -343,7 +343,7 @@ AutoReport/
 - [x] **Deliverable 4**: Generated sample reports in both PDF and HTML formats (`sample_reports/`).
 - [x] **Deliverable 5**: Complete User Guide with CLI manual and template guide (`docs/USER_GUIDE.md`).
 - [x] **Deliverable 6**: Master technical documentation & audit report (`docs/PROJECT_DOCUMENTATION.md`).
-- [x] **Deliverable 7**: 5-minute presentation demo script & cue sheet (`docs/DEMO.md`, `docs/DEMO_SCRIPT.md`).
+- [x] **Deliverable 7**: Project demonstration records and sample report presentations (`demo/`, `sample_reports/`).
 - [x] **Deliverable 8**: 100K-row performance benchmark verification in ~2.53s (`scripts/verify_performance.py`).
 - [x] **Deliverable 9**: 100% test coverage over 821 statements with 59 automated tests (`tests/`).
 - [x] **Deliverable 10**: Cross-platform CI matrix workflow with Ruff linting and Mypy static typing (`.github/workflows/ci.yml`) and 15-day progress log (`CHANGELOG.md`).

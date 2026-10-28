@@ -71,7 +71,7 @@ To test high-volume data ingestion and generation under load:
 ```bash
 python scripts/verify_performance.py
 ```
-This automatically runs an end-to-end benchmark on 100,000 synthetic records and validates that execution time satisfies the official `< 30s` constraint (measured: ~14.05s).
+This automatically runs an end-to-end benchmark on 100,000 synthetic records and validates that execution time satisfies the official `< 30s` constraint (measured: ~2.53s).
 
 
 ## 2. Data sources

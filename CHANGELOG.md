@@ -115,7 +115,8 @@ This changelog documents the complete day-by-day development trajectory of **Aut
 
 
 ### Day 15: Documentation, Demonstration Evidence & Packaging
-- Authored comprehensive documentation: `README.md`, `docs/USER_GUIDE.md`, `docs/DEMO_SCRIPT.md`, `docs/DEMO.md`, and `docs/PROJECT_DOCUMENTATION.md`.
+- Authored comprehensive documentation: `README.md`, `docs/USER_GUIDE.md`, and `docs/PROJECT_DOCUMENTATION.md`.
+- Prepared demonstration repository folder (`demo/`).
 - Regenerated reference sample reports in `sample_reports/`.
 - Configured multi-OS GitHub Actions CI workflow (`.github/workflows/ci.yml`) testing Ubuntu, Windows, and macOS across Python 3.11, 3.12, and 3.13.
 - Finalized repository hygiene and pushed complete codebase to GitHub.

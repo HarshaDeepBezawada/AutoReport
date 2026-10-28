@@ -12,7 +12,7 @@
 
 ## 1. Executive Summary
 
-**AutoReport** is an enterprise-grade automated reporting and analytics generation framework implemented in Python. It solves the critical operational challenge of manual business intelligence reporting by taking raw datasets across heterogeneous formats (CSV, Excel, JSON, SQLite, and REST APIs) and producing publication-quality **HTML** (with interactive Plotly figures) and **PDF** reports (with paginated ReportLab typography and static vector charts) driven entirely by human-readable **YAML templates**.
+**AutoReport** is an enterprise-grade automated reporting and analytics generation framework implemented in Python. It solves the critical operational challenge of manual business reporting by taking raw datasets across heterogeneous formats (CSV, Excel, JSON, SQLite, and REST APIs) and producing publication-quality **HTML** (with interactive Plotly figures) and **PDF** reports (with paginated ReportLab typography and static vector charts) driven entirely by human-readable **YAML templates**.
 
 The software eliminates manual data wrangling, re-running ad-hoc scripts, and error-prone copy-pasting of charts into documents. It provides automated statistical summarization, rolling trend calculations, Z-score/IQR anomaly flagging, scheduled execution via APScheduler, and optional SMTP email distribution.
 
@@ -402,11 +402,11 @@ AutoReport/
 │   ├── hr.xlsx                          # 400 employee records (Excel)
 │   ├── inventory.json                   # 600 product SKUs (JSON)
 │   └── inventory.db                     # SQLite database copy
+├── demo/                                # Project demonstration records
+│   └── .gitkeep
 ├── docs/                                # Technical documentation
 │   ├── PROJECT_DOCUMENTATION.md         # Master technical audit & compliance report
-│   ├── USER_GUIDE.md                    # CLI reference & template authoring manual
-│   ├── DEMO.md                          # 5-minute timed demo cue sheet & screen script
-│   └── DEMO_SCRIPT.md                   # Detailed demonstration walkthrough
+│   └── USER_GUIDE.md                    # CLI reference & template authoring manual
 ├── sample_reports/                      # Generated reference deliverables
 │   ├── sales.html / sales.pdf
 │   ├── hr.html / hr.pdf
