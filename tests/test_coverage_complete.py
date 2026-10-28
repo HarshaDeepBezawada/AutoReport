@@ -259,3 +259,88 @@ def test_cli_advanced_branches(tmp_path, csv_file, monkeypatch):
     assert res_sched.exit_code == 0
     assert "Scheduler stopped." in res_sched.output
 
+
+def test_comparison_and_narrative_full_coverage(df):
+    # test compare_segments
+    with pytest.raises(KeyError, match="must exist"):
+        analysis.compare_segments(df, "nonexistent", "revenue")
+    
+    seg = analysis.compare_segments(df, "region", "revenue")
+    assert "share_pct" in seg.columns
+    assert "diff_from_avg" in seg.columns
+    assert "index_vs_avg" in seg.columns
+    assert len(seg) == df["region"].nunique()
+
+    # test compare_periods
+    p_res = analysis.compare_periods(df, "date", "revenue", freq="ME")
+    assert "current" in p_res
+    assert "previous" in p_res
+    assert "growth_pct" in p_res
+    assert "narrative" in p_res
+
+    # test compare_periods with insufficient data (< 2 periods)
+    short_df = df.head(1).copy()
+    p_short = analysis.compare_periods(short_df, "date", "revenue")
+    assert p_short["current"] is None
+    assert p_short["narrative"] == "Insufficient periods for comparison."
+
+    # test validate_template for comparison without segment or date
+    bad_cmp_dict = {
+        "name": "bad_cmp", "title": "Bad",
+        "sections": [{"type": "comparison", "value": "revenue"}]
+    }
+    problems = validate_template(bad_cmp_dict)
+    assert any("'comparison' needs 'segment' (or 'date')" in p for p in problems)
+
+    with pytest.raises(TemplateError, match="'comparison' needs 'segment'"):
+        parse_template(bad_cmp_dict)
+
+    # test build_report_data with period comparison
+    period_cmp_tpl = parse_template({
+        "name": "pc", "title": "PC",
+        "sections": [{"type": "comparison", "title": "Period Comparison", "date": "date", "value": "revenue"}]
+    })
+    p_items = build_report_data(period_cmp_tpl, df)
+    assert p_items[0]["type"] == "comparison"
+    assert "kpis" in p_items[0]
+
+    # test build_report_data with narrative section having bad data to trigger exception branches
+    bad_dates_df = pd.DataFrame({
+        "metric_col": [10, 20, 30],
+        "date_col": ["invalid_date_1", "invalid_date_2", "invalid_date_3"],
+        "segment_col": ["A", "B", "C"],
+        "anomaly_col": ["str1", "str2", "str3"]
+    })
+    narrative_tpl = parse_template({
+        "name": "nar", "title": "NAR",
+        "sections": [{
+            "type": "narrative",
+            "metric": "metric_col",
+            "date": "date_col",
+            "segment": "segment_col",
+            "anomaly_col": "anomaly_col"
+        }]
+    })
+    n_items = build_report_data(narrative_tpl, bad_dates_df)
+    assert "Automated intelligence summary" in n_items[0]["narrative"]
+
+    # Trigger exception branches in narrative
+    bad_anom_tpl = parse_template({
+        "name": "nar2", "title": "NAR2",
+        "sections": [{
+            "type": "narrative",
+            "metric": "metric_col",
+            "date": "date_col",
+            "segment": "segment_col",
+            "anomaly_col": "anomaly_col",
+            "anomaly_method": "invalid_method"
+        }]
+    })
+    empty_df = pd.DataFrame(columns=["metric_col", "date_col", "segment_col", "anomaly_col"])
+    n_items_empty = build_report_data(bad_anom_tpl, empty_df)
+    assert "Automated intelligence summary" in n_items_empty[0]["narrative"]
+
+
+
+
+

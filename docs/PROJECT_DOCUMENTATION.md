@@ -17,9 +17,9 @@
 The software eliminates manual data wrangling, re-running ad-hoc scripts, and error-prone copy-pasting of charts into documents. It provides automated statistical summarization, rolling trend calculations, Z-score/IQR anomaly flagging, scheduled execution via APScheduler, and optional SMTP email distribution.
 
 ### Key Milestones & Verified Metrics
-- **Test Coverage**: **100% line coverage** across every module in `src/autoreport/` (746 / 746 executable lines covered; 58 tests passed; 0 failures; 0 warnings).
+- **Test Coverage**: **100% line coverage** across every module in `src/autoreport/` (820 / 820 executable lines covered; 59 tests passed; 0 failures; 0 warnings).
 - **Scale Constraint**: Ingests and processes **100,000 rows** without memory bottlenecks.
-- **Speed Constraint**: Complete report generation on 100,000 rows in **14.05 seconds** (official requirement: under 30 seconds).
+- **Speed Constraint**: Complete report generation on 100,000 rows in **2.53 seconds** (official requirement: under 30 seconds).
 - **Architecture**: Strict adherence to the Adapter Pattern, Factory Pattern, Pipeline Pattern, and separation of presentation from business logic.
 
 ---
@@ -51,8 +51,8 @@ The project was audited directly against the official Code A Nova task document 
 | **REQ-19** | **Scheduling Engine**: Cron & interval recurring execution | `src/autoreport/scheduler.py` | APScheduler `CronTrigger` and `IntervalTrigger` with graceful shutdown | `test_background_scheduler_fires` | **VERIFIED PASS** |
 | **REQ-20** | **Email Distribution**: Automatic report emailing | `src/autoreport/scheduler.py` | `send_email` using Python `smtplib` and `EmailMessage` MIME attachments | `test_send_email_mocked` | **VERIFIED PASS** |
 | **REQ-21** | **Scale Benchmark**: Datasets up to 100K rows | `scripts/verify_performance.py` | Vectorized processing without memory leaks | Ingested and processed 100,000 records cleanly | **VERIFIED PASS** |
-| **REQ-22** | **Speed Benchmark**: Generation in under 30 seconds | `scripts/verify_performance.py` | High-resolution monotonic timer benchmark | **14.05 seconds** measured (< 30s budget) | **VERIFIED PASS** |
-| **REQ-23** | **Testing Rigor**: 15+ tests and > 70% coverage | `tests/` | Pytest suite covering all edge cases, exceptions, and CLI paths | **58 tests passed, 100% line coverage** | **VERIFIED PASS** |
+| **REQ-22** | **Speed Benchmark**: Generation in under 30 seconds | `scripts/verify_performance.py` | High-resolution monotonic timer benchmark | **2.53 seconds** measured (< 30s budget) | **VERIFIED PASS** |
+| **REQ-23** | **Testing Rigor**: 15+ tests and > 70% coverage | `tests/` | Pytest suite covering all edge cases, exceptions, and CLI paths | **59 tests passed, 100% line coverage (820/820 statements)** | **VERIFIED PASS** |
 | **REQ-24** | **Cross-Platform**: Windows, macOS, Linux | Source codebase | Standard library `pathlib.Path`, headless `matplotlib.use("Agg")`, and `tzdata` fallback | Fully verified on Windows AMD64 | **VERIFIED PASS** |
 
 ---
@@ -292,20 +292,20 @@ A high-resolution monotonic timer (`time.perf_counter`) measures each phase inde
 AUTOREPORT PERFORMANCE BENCHMARK (100K ROWS)
 ======================================================================
 Generating synthetic benchmark dataset (100,000 rows)...
-Dataset written to disk: 3.51 MB in 0.11s
+Dataset written to disk: 3.51 MB in 0.12s
 
 --- Pipeline Step Breakdown ---
-  1. Ingestion & Schema Validation: 0.11s
-  2. Analysis (Stats, Trend, Anomalies, KPIs): 0.04s
+  1. Ingestion & Schema Validation: 0.13s
+  2. Analysis (Stats, Trend, Anomalies, KPIs, Comparisons): 0.06s
 
 --- End-to-End Report Generation (HTML + PDF) ---
-Total generation time: 14.05s
-  - Generated: sales.html (1259.3 KB)
-  - Generated: sales.pdf (279.1 KB)
+Total generation time: 2.53s
+  - Generated: sales.html (5967.0 KB, offline Plotly bundled)
+  - Generated: sales.pdf (280.2 KB, paginated ReportLab PDF)
 
 ======================================================================
 BENCHMARK RESULT: VERIFIED PASS
-Measured time: 14.05s (Threshold: < 30.0s)
+Measured time: 2.53s (Threshold: < 30.0s — 11.8x faster than budget)
 ======================================================================
 ```
 
@@ -333,11 +333,11 @@ rootdir: C:\Users\harsh\Downloads\autoreport
 configfile: pyproject.toml
 testpaths: tests
 plugins: cov-7.1.0
-collected 58 items
+collected 59 items
 
 tests\test_analysis.py ...............                                   [ 25%]
-tests\test_api_source.py ...                                             [ 31%]
-tests\test_coverage_complete.py ........                                 [ 44%]
+tests\test_api_source.py ...                                             [ 30%]
+tests\test_coverage_complete.py .........                                [ 45%]
 tests\test_ingestion.py ..........                                       [ 62%]
 tests\test_reports.py .................                                  [ 91%]
 tests\test_scheduler.py .....                                            [100%]
@@ -350,22 +350,22 @@ Name                                      Stmts   Miss  Cover   Missing
 src\autoreport\__init__.py                    1      0   100%
 src\autoreport\analysis\__init__.py           4      0   100%
 src\autoreport\analysis\anomalies.py         24      0   100%
-src\autoreport\analysis\stats.py             23      0   100%
+src\autoreport\analysis\stats.py             49      0   100%
 src\autoreport\analysis\trends.py            42      0   100%
 src\autoreport\builders\__init__.py           3      0   100%
-src\autoreport\builders\html_builder.py      33      0   100%
+src\autoreport\builders\html_builder.py      37      0   100%
 src\autoreport\builders\pdf_builder.py       78      0   100%
 src\autoreport\cli.py                        76      0   100%
 src\autoreport\generator.py                  19      0   100%
 src\autoreport\ingestion\__init__.py          2      0   100%
 src\autoreport\ingestion\sources.py          92      0   100%
 src\autoreport\scheduler.py                  52      0   100%
-src\autoreport\template.py                  162      0   100%
+src\autoreport\template.py                  206      0   100%
 src\autoreport\viz\__init__.py                2      0   100%
 src\autoreport\viz\charts.py                133      0   100%
 -----------------------------------------------------------------------
-TOTAL                                       746      0   100%
-======================= 58 passed, 0 warnings =======================
+TOTAL                                       820      0   100%
+======================= 59 passed, 0 warnings =======================
 ```
 
 ---
@@ -388,8 +388,12 @@ TOTAL                                       746      0   100%
 ## 10. Complete File & Directory Inventory
 
 ```
-autoreport/
+AutoReport/
+├── .github/
+│   └── workflows/
+│       └── ci.yml                       # Multi-OS & multi-Python CI matrix (Ubuntu, Win, Mac)
 ├── .gitignore                           # Ignores .venv, build, coverage, reports
+├── CHANGELOG.md                         # 15-day milestone changelog (Day 1 - Day 15)
 ├── pyproject.toml                       # Build metadata, dependencies, Pytest config
 ├── README.md                            # Primary documentation & usage overview
 ├── data/                                # Sample datasets
@@ -398,8 +402,10 @@ autoreport/
 │   ├── inventory.json                   # 600 product SKUs (JSON)
 │   └── inventory.db                     # SQLite database copy
 ├── docs/                                # Technical documentation
+│   ├── PROJECT_DOCUMENTATION.md         # Master technical audit & compliance report
 │   ├── USER_GUIDE.md                    # CLI reference & template authoring manual
-│   └── DEMO_SCRIPT.md                   # 5-minute evaluation demonstration script
+│   ├── DEMO.md                          # 5-minute timed demo cue sheet & screen script
+│   └── DEMO_SCRIPT.md                   # Detailed demonstration walkthrough
 ├── sample_reports/                      # Generated reference deliverables
 │   ├── sales.html / sales.pdf
 │   ├── hr.html / hr.pdf
@@ -415,12 +421,12 @@ autoreport/
 │   ├── scheduler.py                     # APScheduler & SMTP email delivery
 │   ├── analysis/                        # Analytics modules
 │   │   ├── __init__.py                  # Analysis namespace
-│   │   ├── stats.py                     # Summary statistics & group aggregations
+│   │   ├── stats.py                     # Summary statistics, group aggregations, comparisons
 │   │   ├── trends.py                    # Time series, moving avg, seasonality
 │   │   └── anomalies.py                 # Z-score and IQR outlier detection
 │   ├── builders/                        # Document renderers
 │   │   ├── __init__.py                  # Builders namespace
-│   │   ├── html_builder.py              # Jinja2 HTML builder
+│   │   ├── html_builder.py              # Jinja2 HTML builder (offline & CDN Plotly)
 │   │   ├── pdf_builder.py               # ReportLab PDF builder
 │   │   └── report.html                  # Jinja2 HTML layout template
 │   ├── ingestion/                       # Ingestion adapters
@@ -437,7 +443,7 @@ autoreport/
     ├── conftest.py                      # Shared fixtures
     ├── test_analysis.py                 # Mathematical & analytical tests
     ├── test_api_source.py               # REST API mock tests
-    ├── test_coverage_complete.py        # 100% coverage edge-case tests
+    ├── test_coverage_complete.py        # 100% coverage edge-case tests (59 tests)
     ├── test_ingestion.py                # Source adapter tests
     ├── test_reports.py                  # CLI & report generation tests
     └── test_scheduler.py                # Scheduler & SMTP email tests
