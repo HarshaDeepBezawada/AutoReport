@@ -1,0 +1,56 @@
+name: sales
+title: Sales Performance Report
+description: Revenue, regional and product performance with trend and anomaly checks
+source:
+  path: data/sales.csv
+schema:
+  date: any
+  region: string
+  product: string
+  units: numeric
+  revenue: numeric
+date_columns: [date]
+sections:
+  - type: text
+    title: Overview
+    text: This report summarises sales activity across regions and products, highlights revenue trends, and flags unusual transactions for review.
+  - type: kpis
+    title: Key Metrics
+    items:
+      - {label: Total Revenue, column: revenue, agg: sum, format: currency}
+      - {label: Avg Order Value, column: revenue, agg: mean, format: currency}
+      - {label: Units Sold, column: units, agg: sum}
+      - {label: Orders, column: revenue, agg: count}
+  - type: summary
+    title: Statistical Summary
+    columns: [units, revenue, discount_pct]
+  - type: chart
+    title: Revenue by Region
+    chart: {type: bar, x: region, y: revenue, agg: sum, title: Revenue by Region}
+  - type: chart
+    title: Revenue Share by Product
+    chart: {type: pie, x: product, y: revenue, agg: sum, title: Product Share}
+  - type: trend
+    title: Monthly Revenue Trend
+    date: date
+    column: revenue
+    freq: ME
+    agg: sum
+    window: 3
+  - type: table
+    title: Region Breakdown
+    group_by: region
+    value: revenue
+    aggs: [sum, mean, count]
+  - type: chart
+    title: Units vs Revenue
+    chart: {type: scatter, x: units, y: revenue, hue: region, title: Units vs Revenue}
+  - type: chart
+    title: Correlations
+    chart: {type: heatmap, columns: [units, revenue, discount_pct], title: Correlation Matrix}
+  - type: anomalies
+    title: Unusual Transactions (Z-score)
+    column: revenue
+    method: zscore
+    threshold: 3
+    show: [date, region, product, units, revenue]

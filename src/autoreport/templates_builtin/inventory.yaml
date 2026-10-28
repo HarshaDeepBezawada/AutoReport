@@ -1,0 +1,46 @@
+name: inventory
+title: Inventory Status Report
+description: Stock levels, value and fast/slow movers by category
+source:
+  path: data/inventory.json
+schema:
+  sku: string
+  category: string
+  stock: numeric
+  unit_cost: numeric
+date_columns: [last_restock]
+sections:
+  - type: kpis
+    title: Inventory Snapshot
+    items:
+      - {label: SKUs, column: sku, agg: count}
+      - {label: Units In Stock, column: stock, agg: sum}
+      - {label: Stock Value, column: stock_value, agg: sum, format: currency}
+      - {label: Units Sold (30d), column: sold_last_30d, agg: sum}
+  - type: chart
+    title: Stock Value by Category
+    chart: {type: bar, x: category, y: stock_value, agg: sum, title: Stock Value by Category}
+  - type: chart
+    title: Share of Units by Category
+    chart: {type: pie, x: category, y: stock, agg: sum, title: Units by Category}
+  - type: table
+    title: Category Breakdown
+    group_by: category
+    value: stock_value
+    aggs: [sum, mean, count]
+  - type: table
+    title: Top 10 Fastest Movers
+    columns: [sku, category, sold_last_30d, stock]
+    sort_by: sold_last_30d
+    limit: 10
+  - type: chart
+    title: Stock Level Distribution
+    chart: {type: histogram, x: stock, bins: 30, title: Stock Level Distribution}
+  - type: summary
+    title: Statistical Summary
+    columns: [unit_cost, stock, reorder_level, sold_last_30d]
+  - type: anomalies
+    title: Overstocked SKUs (IQR)
+    column: stock
+    method: iqr
+    show: [sku, category, stock, unit_cost, stock_value]

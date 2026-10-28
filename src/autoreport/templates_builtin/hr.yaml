@@ -1,0 +1,45 @@
+name: hr
+title: HR Workforce Report
+description: Headcount, compensation and performance across departments
+source:
+  path: data/hr.xlsx
+schema:
+  employee_id: numeric
+  department: string
+  salary: numeric
+  tenure_years: numeric
+  performance_score: numeric
+date_columns: [hire_date]
+sections:
+  - type: kpis
+    title: Workforce Snapshot
+    items:
+      - {label: Headcount, column: employee_id, agg: count}
+      - {label: Avg Salary, column: salary, agg: mean, format: currency}
+      - {label: Avg Tenure (yrs), column: tenure_years, agg: mean}
+      - {label: Avg Performance, column: performance_score, agg: mean}
+  - type: chart
+    title: Headcount by Department
+    chart: {type: bar, x: department, y: employee_id, agg: count, title: Headcount by Department}
+  - type: table
+    title: Salary by Department
+    group_by: department
+    value: salary
+    aggs: [mean, median, count]
+  - type: chart
+    title: Salary Distribution
+    chart: {type: histogram, x: salary, bins: 25, title: Salary Distribution}
+  - type: chart
+    title: Tenure vs Salary
+    chart: {type: scatter, x: tenure_years, y: salary, hue: department, title: Tenure vs Salary}
+  - type: summary
+    title: Statistical Summary
+    columns: [salary, tenure_years, performance_score, remote_days]
+  - type: chart
+    title: Correlations
+    chart: {type: heatmap, columns: [salary, tenure_years, performance_score, remote_days], title: Correlation Matrix}
+  - type: anomalies
+    title: Salary Outliers (IQR)
+    column: salary
+    method: iqr
+    show: [employee_id, department, salary, tenure_years]
