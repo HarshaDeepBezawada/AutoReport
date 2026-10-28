@@ -17,6 +17,16 @@ sections:
       - {label: Units In Stock, column: stock, agg: sum}
       - {label: Stock Value, column: stock_value, agg: sum, format: currency}
       - {label: Units Sold (30d), column: sold_last_30d, agg: sum}
+  - type: narrative
+    title: Inventory Health Summary
+    metric: stock_value
+    segment: category
+    anomaly_col: stock
+    anomaly_method: iqr
+  - type: comparison
+    title: Category Valuation Benchmark Comparison
+    segment: category
+    value: stock_value
   - type: chart
     title: Stock Value by Category
     chart: {type: bar, x: category, y: stock_value, agg: sum, title: Stock Value by Category}

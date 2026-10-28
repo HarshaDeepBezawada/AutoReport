@@ -19,7 +19,7 @@ from . import analysis
 from .ingestion import DataSourceError, get_source
 from .viz import CHART_TYPES
 
-SECTION_TYPES = ("summary", "kpis", "table", "chart", "trend", "anomalies", "text")
+SECTION_TYPES = ("summary", "kpis", "table", "chart", "trend", "anomalies", "text", "comparison", "narrative")
 
 
 class TemplateError(Exception):
@@ -126,6 +126,8 @@ def validate_template(raw: Any) -> list[str]:
             problems.append(f"Section {i}: 'kpis' needs 'items'")
         elif t in ("trend", "anomalies") and "column" not in s and "value" not in s:
             problems.append(f"Section {i}: '{t}' needs 'column' (or 'value')")
+        elif t == "comparison" and "segment" not in s and "date" not in s:
+            problems.append(f"Section {i}: 'comparison' needs 'segment' (or 'date') and 'value'")
     return problems
 
 
@@ -230,5 +232,54 @@ def build_report_data(tpl: ReportTemplate, df: pd.DataFrame) -> list[dict[str, A
                 f"{len(flagged)} of {len(df):,} records flagged as anomalous in '{col}' "
                 f"using the {'Z-score' if method == 'zscore' else 'IQR'} method."
             )
+        elif sec.type == "comparison":
+            val_col = o.get("value")
+            if "segment" in o:
+                seg_df = analysis.compare_segments(df, o["segment"], val_col, o.get("agg", "sum"))
+                top_seg = seg_df.iloc[0]
+                item["table"] = _table_payload(seg_df, o.get("limit", 15))
+                item["narrative"] = (
+                    f"Segment comparison across '{o['segment']}': {top_seg[o['segment']]} leads with "
+                    f"{top_seg['share_pct']}% of total {val_col}."
+                )
+            elif "date" in o:
+                cmp = analysis.compare_periods(df, o["date"], val_col, o.get("freq", "ME"), o.get("agg", "sum"))
+                item["narrative"] = cmp["narrative"]
+                if cmp["current"] is not None:
+                    item["kpis"] = [
+                        {"label": "Current Period", "value": _fmt(cmp["current"], o.get("format", ""))},
+                        {"label": "Prior Period", "value": _fmt(cmp["previous"], o.get("format", ""))},
+                        {"label": "Change (%)", "value": _fmt(cmp["growth_pct"], "percent")},
+                    ]
+        elif sec.type == "narrative":
+            summary_sentences = [f"Automated intelligence summary across {len(df):,} records."]
+            if "metric" in o and o["metric"] in df.columns:
+                m = o["metric"]
+                tot = df[m].sum() if pd.api.types.is_numeric_dtype(df[m]) else 0
+                avg = df[m].mean() if pd.api.types.is_numeric_dtype(df[m]) else 0
+                fmt_t = o.get("format", "currency" if any(k in m.lower() for k in ("rev", "sal", "cost", "price")) else "")
+                summary_sentences.append(f"Aggregate {m} totaled {_fmt(tot, fmt_t)} (mean: {_fmt(avg, fmt_t)}).")
+            if "date" in o and "metric" in o and o["metric"] in df.columns and o["date"] in df.columns:
+                try:
+                    s_ts = analysis.resample_series(df, o["date"], o["metric"])
+                    d_info = analysis.trend_direction(s_ts)
+                    g_tot = analysis.overall_growth(s_ts)
+                    g_str = f" ({'+' if g_tot >= 0 else ''}{g_tot:.1f}% growth)" if g_tot is not None else ""
+                    summary_sentences.append(f"Trend direction is {d_info['direction']}{g_str} with R² = {d_info['r2']}.")
+                except Exception:
+                    pass
+            if "segment" in o and "metric" in o and o["segment"] in df.columns and o["metric"] in df.columns:
+                try:
+                    top_lead = analysis.compare_segments(df, o["segment"], o["metric"]).iloc[0]
+                    summary_sentences.append(f"The top-performing segment was {top_lead[o['segment']]} ({top_lead['share_pct']}% share).")
+                except Exception:
+                    pass
+            if "anomaly_col" in o and o["anomaly_col"] in df.columns:
+                try:
+                    anom_cnt = len(analysis.flag_anomalies(df, o["anomaly_col"], o.get("anomaly_method", "zscore")))
+                    summary_sentences.append(f"{anom_cnt} records were flagged as statistical anomalies in '{o['anomaly_col']}'.")
+                except Exception:
+                    pass
+            item["narrative"] = " ".join(summary_sentences)
         out.append(item)
     return out

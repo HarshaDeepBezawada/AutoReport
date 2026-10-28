@@ -50,11 +50,12 @@ def send_email(files: list[Path], to_addr: str, smtp_host: str, smtp_port: int =
 
 
 def make_job(template: str, data: str | None, output_dir: str, fmt: str,
-             on_done: Callable[[list[Path]], None] | None = None) -> Callable[[], list[Path]]:
+             on_done: Callable[[list[Path]], None] | None = None,
+             offline: bool = True) -> Callable[[], list[Path]]:
     """Return a callable that generates the report (used as the scheduled job)."""
     def job() -> list[Path]:
         try:
-            files = generate_report(template, data, output_dir, fmt)
+            files = generate_report(template, data, output_dir, fmt, offline=offline)
             log.info("Generated: %s", ", ".join(str(f) for f in files))
             if on_done:
                 on_done(files)

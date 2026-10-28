@@ -14,6 +14,12 @@ sections:
   - type: text
     title: Overview
     text: This report summarises sales activity across regions and products, highlights revenue trends, and flags unusual transactions for review.
+  - type: narrative
+    title: Executive Narrative Summary
+    metric: revenue
+    date: date
+    segment: region
+    anomaly_col: revenue
   - type: kpis
     title: Key Metrics
     items:
@@ -42,6 +48,10 @@ sections:
     group_by: region
     value: revenue
     aggs: [sum, mean, count]
+  - type: comparison
+    title: Regional Share & Benchmark Comparison
+    segment: region
+    value: revenue
   - type: chart
     title: Units vs Revenue
     chart: {type: scatter, x: units, y: revenue, hue: region, title: Units vs Revenue}

@@ -4,7 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ title }}</title>
-{% if interactive %}<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>{% endif %}
+{% if interactive %}
+  {% if offline %}
+    <script>{{ plotly_js | safe }}</script>
+  {% else %}
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+  {% endif %}
+{% endif %}
 <style>
   :root { --blue:#2F6FED; --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb; --bg:#f6f7fb; }
   * { box-sizing:border-box; }
@@ -26,7 +32,7 @@
   th { background:#f3f4f8; font-weight:600; }
   .table-wrap { overflow-x:auto; }
   img.chart { max-width:100%; height:auto; display:block; margin:0 auto; }
-  .note { color:var(--muted); font-size:.95rem; margin:0 0 12px; }
+  .note { color:var(--ink); background:#eff6ff; border-left:4px solid var(--blue); padding:10px 14px; border-radius:0 8px 8px 0; font-size:.95rem; margin:0 0 14px; line-height:1.6; }
   footer { text-align:center; color:var(--muted); font-size:.8rem; padding-bottom:24px; }
   @media (max-width:600px) { header h1 { font-size:1.4rem; } }
 </style>

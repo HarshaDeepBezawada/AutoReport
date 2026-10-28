@@ -47,10 +47,11 @@ def generate(
     fmt: str = typer.Option("both", "--format", "-f", help="html, pdf or both."),
     name: Optional[str] = typer.Option(None, "--name", "-n", help="Base file name for the report."),
     template_dir: Optional[Path] = typer.Option(None, "--template-dir", help="Extra folder of templates."),
+    offline: bool = typer.Option(True, "--offline/--online", help="Embed Plotly.js directly for 100% offline viewing without internet."),
 ) -> None:
     """Generate a report once."""
     try:
-        files = generate_report(template, data, output, fmt, name, template_dir)
+        files = generate_report(template, data, output, fmt, name, template_dir, offline=offline)
     except (TemplateError, DataSourceError, ChartError, ValueError, KeyError) as exc:
         raise _fail(str(exc))
     for f in files:
@@ -109,6 +110,7 @@ def schedule(
     email_to: Optional[str] = typer.Option(None, "--email-to", help="Email the report to this address."),
     smtp_host: str = typer.Option("localhost", "--smtp-host"),
     smtp_port: int = typer.Option(587, "--smtp-port"),
+    offline: bool = typer.Option(True, "--offline/--online", help="Embed Plotly.js for offline viewing."),
 ) -> None:
     """Run the report on a schedule (Ctrl+C to stop)."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
@@ -118,7 +120,7 @@ def schedule(
     except (ValueError, TemplateError) as exc:
         raise _fail(str(exc))
     on_done = (lambda files: send_email(files, email_to, smtp_host, smtp_port)) if email_to else None
-    job = make_job(template, data, str(output), fmt, on_done)
+    job = make_job(template, data, str(output), fmt, on_done, offline=offline)
     if run_now:
         job()
     sched = create_scheduler(job, trigger, blocking=True)

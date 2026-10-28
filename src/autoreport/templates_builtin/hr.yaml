@@ -18,6 +18,16 @@ sections:
       - {label: Avg Salary, column: salary, agg: mean, format: currency}
       - {label: Avg Tenure (yrs), column: tenure_years, agg: mean}
       - {label: Avg Performance, column: performance_score, agg: mean}
+  - type: narrative
+    title: Workforce Executive Summary
+    metric: salary
+    segment: department
+    anomaly_col: salary
+    anomaly_method: iqr
+  - type: comparison
+    title: Departmental Salary Comparison vs Company Average
+    segment: department
+    value: salary
   - type: chart
     title: Headcount by Department
     chart: {type: bar, x: department, y: employee_id, agg: count, title: Headcount by Department}

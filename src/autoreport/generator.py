@@ -12,7 +12,8 @@ FORMATS = ("html", "pdf", "both")
 
 def generate_report(template: str, data: str | None = None, output_dir: str | Path = "reports",
                     fmt: str = "both", basename: str | None = None,
-                    template_dir: str | Path | None = None) -> list[Path]:
+                    template_dir: str | Path | None = None,
+                    offline: bool = True) -> list[Path]:
     """Generate one or more report files and return their paths."""
     if fmt not in FORMATS:
         raise ValueError(f"format must be one of {FORMATS}")
@@ -23,7 +24,7 @@ def generate_report(template: str, data: str | None = None, output_dir: str | Pa
     name = basename or tpl.name
     produced: list[Path] = []
     if fmt in ("html", "both"):
-        produced.append(build_html(tpl.title, tpl.description, sections, df, out_dir / f"{name}.html"))
+        produced.append(build_html(tpl.title, tpl.description, sections, df, out_dir / f"{name}.html", offline=offline))
     if fmt in ("pdf", "both"):
         produced.append(build_pdf(tpl.title, tpl.description, sections, df, out_dir / f"{name}.pdf"))
     return produced
