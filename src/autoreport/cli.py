@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 import typer
 import yaml
@@ -15,11 +14,13 @@ from .ingestion import DataSourceError
 from .scheduler import build_trigger, create_scheduler, make_job, send_email
 from .template import (
     TemplateError,
-    list_templates as _list_templates,
     load_data,
     load_template,
     resolve_template_path,
     validate_template,
+)
+from .template import (
+    list_templates as _list_templates,
 )
 from .viz import ChartError
 
@@ -27,7 +28,7 @@ app = typer.Typer(help="AutoReport - automated report & analytics generator.",
                   no_args_is_help=True, add_completion=False)
 
 
-def _fail(msg: str) -> "typer.Exit":
+def _fail(msg: str) -> typer.Exit:
     typer.secho(f"Error: {msg}", fg=typer.colors.RED, err=True)
     return typer.Exit(code=1)
 
@@ -42,11 +43,11 @@ def main(version: bool = typer.Option(False, "--version", "-V", help="Show versi
 @app.command()
 def generate(
     template: str = typer.Argument(..., help="Template name (see list-templates) or path to a .yaml file."),
-    data: Optional[str] = typer.Option(None, "--data", "-d", help="Data file or URL (overrides the template)."),
+    data: str | None = typer.Option(None, "--data", "-d", help="Data file or URL (overrides the template)."),
     output: Path = typer.Option(Path("reports"), "--output", "-o", help="Output directory."),
     fmt: str = typer.Option("both", "--format", "-f", help="html, pdf or both."),
-    name: Optional[str] = typer.Option(None, "--name", "-n", help="Base file name for the report."),
-    template_dir: Optional[Path] = typer.Option(None, "--template-dir", help="Extra folder of templates."),
+    name: str | None = typer.Option(None, "--name", "-n", help="Base file name for the report."),
+    template_dir: Path | None = typer.Option(None, "--template-dir", help="Extra folder of templates."),
     offline: bool = typer.Option(True, "--offline/--online", help="Embed Plotly.js directly for 100% offline viewing without internet."),
 ) -> None:
     """Generate a report once."""
@@ -61,8 +62,8 @@ def generate(
 @app.command()
 def validate(
     template: str = typer.Argument(..., help="Template name or path."),
-    data: Optional[str] = typer.Option(None, "--data", "-d", help="Also load this data and check the schema."),
-    template_dir: Optional[Path] = typer.Option(None, "--template-dir"),
+    data: str | None = typer.Option(None, "--data", "-d", help="Also load this data and check the schema."),
+    template_dir: Path | None = typer.Option(None, "--template-dir"),
 ) -> None:
     """Check a template (and optionally its data) without producing a report."""
     try:
@@ -87,7 +88,7 @@ def validate(
 
 
 @app.command("list-templates")
-def list_templates(template_dir: Optional[Path] = typer.Option(None, "--template-dir")) -> None:
+def list_templates(template_dir: Path | None = typer.Option(None, "--template-dir")) -> None:
     """List available report templates."""
     items = _list_templates(template_dir)
     if not items:
@@ -101,13 +102,13 @@ def list_templates(template_dir: Optional[Path] = typer.Option(None, "--template
 @app.command()
 def schedule(
     template: str = typer.Argument(..., help="Template name or path."),
-    data: Optional[str] = typer.Option(None, "--data", "-d"),
+    data: str | None = typer.Option(None, "--data", "-d"),
     output: Path = typer.Option(Path("reports"), "--output", "-o"),
     fmt: str = typer.Option("both", "--format", "-f"),
-    cron: Optional[str] = typer.Option(None, "--cron", help="5-field cron, e.g. '0 8 * * 1' (Mondays 08:00)."),
-    every: Optional[int] = typer.Option(None, "--every", help="Run every N minutes."),
+    cron: str | None = typer.Option(None, "--cron", help="5-field cron, e.g. '0 8 * * 1' (Mondays 08:00)."),
+    every: int | None = typer.Option(None, "--every", help="Run every N minutes."),
     run_now: bool = typer.Option(True, "--run-now/--no-run-now", help="Generate once immediately."),
-    email_to: Optional[str] = typer.Option(None, "--email-to", help="Email the report to this address."),
+    email_to: str | None = typer.Option(None, "--email-to", help="Email the report to this address."),
     smtp_host: str = typer.Option("localhost", "--smtp-host"),
     smtp_port: int = typer.Option(587, "--smtp-port"),
     offline: bool = typer.Option(True, "--offline/--online", help="Embed Plotly.js for offline viewing."),

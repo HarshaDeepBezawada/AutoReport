@@ -234,8 +234,10 @@ def build_report_data(tpl: ReportTemplate, df: pd.DataFrame) -> list[dict[str, A
             )
         elif sec.type == "comparison":
             val_col = o.get("value")
+            if not val_col or not isinstance(val_col, str):
+                raise TemplateError(f"Section '{sec.title}': 'comparison' requires a valid 'value' column")
             if "segment" in o:
-                seg_df = analysis.compare_segments(df, o["segment"], val_col, o.get("agg", "sum"))
+                seg_df = analysis.compare_segments(df, str(o["segment"]), val_col, o.get("agg", "sum"))
                 top_seg = seg_df.iloc[0]
                 item["table"] = _table_payload(seg_df, o.get("limit", 15))
                 item["narrative"] = (
@@ -243,7 +245,7 @@ def build_report_data(tpl: ReportTemplate, df: pd.DataFrame) -> list[dict[str, A
                     f"{top_seg['share_pct']}% of total {val_col}."
                 )
             elif "date" in o:
-                cmp = analysis.compare_periods(df, o["date"], val_col, o.get("freq", "ME"), o.get("agg", "sum"))
+                cmp = analysis.compare_periods(df, str(o["date"]), val_col, o.get("freq", "ME"), o.get("agg", "sum"))
                 item["narrative"] = cmp["narrative"]
                 if cmp["current"] is not None:
                     item["kpis"] = [

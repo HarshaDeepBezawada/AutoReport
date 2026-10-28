@@ -60,7 +60,7 @@ def run_benchmark(n_rows: int = 100_000) -> bool:
 
         # Step 2: Statistical & Analytical Processing
         t0 = time.perf_counter()
-        sections = build_report_data(tpl, loaded_df)
+        _ = build_report_data(tpl, loaded_df)
         t_analysis = time.perf_counter() - t0
         print(f"  2. Analysis (Stats, Trend, Anomalies, KPIs): {t_analysis:.2f}s")
 

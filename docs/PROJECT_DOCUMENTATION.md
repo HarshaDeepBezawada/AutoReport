@@ -17,7 +17,8 @@
 The software eliminates manual data wrangling, re-running ad-hoc scripts, and error-prone copy-pasting of charts into documents. It provides automated statistical summarization, rolling trend calculations, Z-score/IQR anomaly flagging, scheduled execution via APScheduler, and optional SMTP email distribution.
 
 ### Key Milestones & Verified Metrics
-- **Test Coverage**: **100% line coverage** across every module in `src/autoreport/` (820 / 820 executable lines covered; 59 tests passed; 0 failures; 0 warnings).
+- **Test Coverage**: **100% line coverage** across every module in `src/autoreport/` (821 / 821 executable lines covered; 59 tests passed; 0 failures; 0 warnings).
+- **Static Quality Gates**: Zero linting errors via Ruff, zero type errors via strict Mypy.
 - **Scale Constraint**: Ingests and processes **100,000 rows** without memory bottlenecks.
 - **Speed Constraint**: Complete report generation on 100,000 rows in **2.53 seconds** (official requirement: under 30 seconds).
 - **Architecture**: Strict adherence to the Adapter Pattern, Factory Pattern, Pipeline Pattern, and separation of presentation from business logic.
@@ -353,18 +354,18 @@ src\autoreport\analysis\anomalies.py         24      0   100%
 src\autoreport\analysis\stats.py             49      0   100%
 src\autoreport\analysis\trends.py            42      0   100%
 src\autoreport\builders\__init__.py           3      0   100%
-src\autoreport\builders\html_builder.py      37      0   100%
+src\autoreport\builders\html_builder.py      35      0   100%
 src\autoreport\builders\pdf_builder.py       78      0   100%
 src\autoreport\cli.py                        76      0   100%
 src\autoreport\generator.py                  19      0   100%
 src\autoreport\ingestion\__init__.py          2      0   100%
 src\autoreport\ingestion\sources.py          92      0   100%
 src\autoreport\scheduler.py                  52      0   100%
-src\autoreport\template.py                  206      0   100%
+src\autoreport\template.py                  208      0   100%
 src\autoreport\viz\__init__.py                2      0   100%
-src\autoreport\viz\charts.py                133      0   100%
+src\autoreport\viz\charts.py                134      0   100%
 -----------------------------------------------------------------------
-TOTAL                                       820      0   100%
+TOTAL                                       821      0   100%
 ======================= 59 passed, 0 warnings =======================
 ```
 

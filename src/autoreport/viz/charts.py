@@ -8,17 +8,18 @@ from __future__ import annotations
 
 import base64
 import io
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 import matplotlib
 
 matplotlib.use("Agg")  # headless / cross-platform
 import matplotlib.pyplot as plt  # noqa: E402
-from matplotlib.ticker import FuncFormatter  # noqa: E402
 import pandas as pd  # noqa: E402
 import plotly.express as px  # noqa: E402
 import plotly.graph_objects as go  # noqa: E402
 import seaborn as sns  # noqa: E402
+from matplotlib.ticker import FuncFormatter  # noqa: E402
 
 PALETTE = ["#2F6FED", "#F2994A", "#27AE60", "#EB5757", "#9B51E0", "#56CCF2", "#F2C94C"]
 CHART_TYPES = ("bar", "line", "pie", "scatter", "heatmap", "histogram")

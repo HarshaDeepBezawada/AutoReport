@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import logging
 import smtplib
+from collections.abc import Callable
 from email.message import EmailMessage
 from pathlib import Path
-from typing import Callable
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.blocking import BlockingScheduler

@@ -1,10 +1,9 @@
 import json
 import sqlite3
+from contextlib import closing
 
 import pandas as pd
 import pytest
-
-from contextlib import closing
 
 from autoreport.ingestion import DataSourceError, get_source, validate_schema
 

@@ -90,7 +90,7 @@ class SQLiteSource(DataSource):
                         f"(tables found: {', '.join(names) or 'none'})")
                 table = names[0]
             if not query:
-                if not table.replace("_", "").isalnum():
+                if not isinstance(table, str) or not table.replace("_", "").isalnum():
                     raise DataSourceError(f"Invalid table name: {table!r}")
                 query = f"SELECT * FROM {table}"
             return pd.read_sql_query(query, conn)

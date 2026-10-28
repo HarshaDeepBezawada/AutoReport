@@ -1,7 +1,5 @@
 """Comprehensive edge case and branch tests to achieve maximum coverage and robustness."""
 
-import base64
-import json
 import pandas as pd
 import pytest
 from typer.testing import CliRunner
@@ -264,7 +262,7 @@ def test_comparison_and_narrative_full_coverage(df):
     # test compare_segments
     with pytest.raises(KeyError, match="must exist"):
         analysis.compare_segments(df, "nonexistent", "revenue")
-    
+
     seg = analysis.compare_segments(df, "region", "revenue")
     assert "share_pct" in seg.columns
     assert "diff_from_avg" in seg.columns
@@ -294,6 +292,15 @@ def test_comparison_and_narrative_full_coverage(df):
 
     with pytest.raises(TemplateError, match="'comparison' needs 'segment'"):
         parse_template(bad_cmp_dict)
+
+    # test build_report_data when comparison value is invalid/None
+    bad_val_cmp = parse_template({
+        "name": "bvc", "title": "BVC",
+        "sections": [{"type": "comparison", "segment": "region", "value": "revenue"}]
+    })
+    bad_val_cmp.sections[0].options["value"] = None
+    with pytest.raises(TemplateError, match="requires a valid 'value' column"):
+        build_report_data(bad_val_cmp, df)
 
     # test build_report_data with period comparison
     period_cmp_tpl = parse_template({

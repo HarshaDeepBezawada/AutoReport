@@ -23,7 +23,6 @@ def prepare_sections(sections: list[dict[str, Any]], df: pd.DataFrame,
                      interactive: bool) -> list[dict[str, Any]]:
     """Attach rendered chart HTML (Plotly) or PNG data URIs to each section."""
     prepared: list[dict[str, Any]] = []
-    first_plotly = True
     for s in sections:
         s = dict(s)
         if "chart" in s:
@@ -32,7 +31,6 @@ def prepare_sections(sections: list[dict[str, Any]], df: pd.DataFrame,
             if interactive:
                 fig = make_plotly_chart(data, spec)
                 s["chart_html"] = fig.to_html(full_html=False, include_plotlyjs=False)
-                first_plotly = False
             else:
                 s["chart_img"] = png_to_data_uri(make_static_chart(data, spec))
         prepared.append(s)

@@ -6,6 +6,7 @@ import io
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+from xml.sax.saxutils import escape
 
 import pandas as pd
 from reportlab.lib import colors
@@ -21,7 +22,6 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
-from xml.sax.saxutils import escape
 
 from ..viz import make_static_chart
 

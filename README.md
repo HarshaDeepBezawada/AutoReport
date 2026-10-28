@@ -1,7 +1,7 @@
 # AutoReport — Automated Report & Analytics Generator
 
 [![Build & Tests](https://github.com/HarshaDeepBezawada/AutoReport/actions/workflows/ci.yml/badge.svg)](https://github.com/HarshaDeepBezawada/AutoReport/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-100%25%20(820%2F820)-brightgreen.svg)](#7-testing--code-coverage)
+[![Coverage](https://img.shields.io/badge/Coverage-100%25%20(821%2F821)-brightgreen.svg)](#7-testing--code-coverage)
 [![Python Version](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue.svg)](pyproject.toml)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](pyproject.toml)
 [![Cross-Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#3-technology-stack)
@@ -241,22 +241,23 @@ src\autoreport\analysis\anomalies.py         24      0   100%
 src\autoreport\analysis\stats.py             49      0   100%
 src\autoreport\analysis\trends.py            42      0   100%
 src\autoreport\builders\__init__.py           3      0   100%
-src\autoreport\builders\html_builder.py      37      0   100%
+src\autoreport\builders\html_builder.py      35      0   100%
 src\autoreport\builders\pdf_builder.py       78      0   100%
 src\autoreport\cli.py                        76      0   100%
 src\autoreport\generator.py                  19      0   100%
 src\autoreport\ingestion\__init__.py          2      0   100%
 src\autoreport\ingestion\sources.py          92      0   100%
 src\autoreport\scheduler.py                  52      0   100%
-src\autoreport\template.py                  206      0   100%
+src\autoreport\template.py                  208      0   100%
 src\autoreport\viz\__init__.py                2      0   100%
-src\autoreport\viz\charts.py                133      0   100%
+src\autoreport\viz\charts.py                134      0   100%
 -----------------------------------------------------------------------
-TOTAL                                       820      0   100%
+TOTAL                                       821      0   100%
 ======================= 59 passed, 0 warnings =======================
 ```
 - **Total Tests**: 59 passed, 0 failed.
-- **Coverage**: **100%** across every single module and line in the entire codebase (**820 / 820 statements covered**, far exceeding the official `> 70%` requirement).
+- **Coverage**: **100%** across every single module and line in the entire codebase (**821 / 821 statements covered**, far exceeding the official `> 70%` requirement).
+- **Static Analysis & Type Checking**: 0 warnings in `ruff check .`, 0 issues in `mypy src`.
 
 ---
 
@@ -344,5 +345,5 @@ AutoReport/
 - [x] **Deliverable 6**: Master technical documentation & audit report (`docs/PROJECT_DOCUMENTATION.md`).
 - [x] **Deliverable 7**: 5-minute presentation demo script & cue sheet (`docs/DEMO.md`, `docs/DEMO_SCRIPT.md`).
 - [x] **Deliverable 8**: 100K-row performance benchmark verification in ~2.53s (`scripts/verify_performance.py`).
-- [x] **Deliverable 9**: 100% test coverage over 820 statements with 59 automated tests (`tests/`).
-- [x] **Deliverable 10**: Cross-platform CI matrix workflow (`.github/workflows/ci.yml`) and 15-day progress log (`CHANGELOG.md`).
+- [x] **Deliverable 9**: 100% test coverage over 821 statements with 59 automated tests (`tests/`).
+- [x] **Deliverable 10**: Cross-platform CI matrix workflow with Ruff linting and Mypy static typing (`.github/workflows/ci.yml`) and 15-day progress log (`CHANGELOG.md`).
