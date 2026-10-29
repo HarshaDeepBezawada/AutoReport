@@ -3,7 +3,7 @@
 **Project Title**: AutoReport — Automated Report & Analytics Generator  
 **Domain**: Python Development, Data Engineering, Test Automation & Analytics  
 **Internship Organization**: Code A Nova (15-Day Internship Program)  
-**Developer**: Harshadeep Bezawada (Intern ID: CN/INT/2026/921)  
+**Developer**: Harshadeep Bezawada  
 **Repository**: [https://github.com/HarshaDeepBezawada/AutoReport](https://github.com/HarshaDeepBezawada/AutoReport)  
 **Target Platform**: Cross-Platform (Windows, macOS, Linux)  
 **Runtime**: Python 3.11+ (Verified on Python 3.14.6)  
