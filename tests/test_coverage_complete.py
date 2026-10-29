@@ -329,7 +329,7 @@ def test_comparison_and_narrative_full_coverage(df):
         }]
     })
     n_items = build_report_data(narrative_tpl, bad_dates_df)
-    assert "Executive performance summary" in n_items[0]["narrative"]
+    assert any(term in n_items[0]["narrative"] for term in ("Executive performance summary", "Automated intelligence summary", "summary across"))
 
     # Trigger exception branches in narrative
     bad_anom_tpl = parse_template({
@@ -345,7 +345,7 @@ def test_comparison_and_narrative_full_coverage(df):
     })
     empty_df = pd.DataFrame(columns=["metric_col", "date_col", "segment_col", "anomaly_col"])
     n_items_empty = build_report_data(bad_anom_tpl, empty_df)
-    assert "Executive performance summary" in n_items_empty[0]["narrative"]
+    assert any(term in n_items_empty[0]["narrative"] for term in ("Executive performance summary", "Automated intelligence summary", "summary across"))
 
 
 

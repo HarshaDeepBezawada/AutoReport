@@ -43,6 +43,7 @@ autoreport = ["templates_builtin/*.yaml", "builders/*.html"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 addopts = "-q"
 filterwarnings = [
     "ignore::PendingDeprecationWarning:seaborn.*",
