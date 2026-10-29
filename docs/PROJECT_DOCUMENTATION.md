@@ -23,6 +23,11 @@ The software eliminates manual data wrangling, re-running ad-hoc scripts, and er
 - **Speed Constraint**: Complete report generation on 100,000 rows in **2.53 seconds** (official requirement: under 30 seconds).
 - **Architecture**: Strict adherence to the Adapter Pattern, Factory Pattern, Pipeline Pattern, and separation of presentation from business logic.
 
+### Official Project Demonstration Video
+- **Video Link**: [AutoReport 5-Minute Demonstration Video (Google Drive)](https://drive.google.com/file/d/1oPhKqFStkFfacsF1el7Nq7Sai8XLWLgj/view?usp=drive_link)
+- **Presenter**: Harshadeep Bezawada
+- *Playback Notice*: If the Google Drive preview does not load or stream directly in your browser, please try opening the link in a different web browser (e.g., Google Chrome or Microsoft Edge) or download the video file directly to view locally.
+
 ---
 
 ## 2. Official Task Requirements & Compliance Matrix

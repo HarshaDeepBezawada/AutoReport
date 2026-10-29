@@ -2,6 +2,7 @@
 
 [![Build & Tests](https://github.com/HarshaDeepBezawada/AutoReport/actions/workflows/ci.yml/badge.svg)](https://github.com/HarshaDeepBezawada/AutoReport/actions)
 [![Coverage](https://img.shields.io/badge/Coverage-100%25%20(821%2F821)-brightgreen.svg)](#7-testing--code-coverage)
+[![Demo Video](https://img.shields.io/badge/Demo%20Video-Google%20Drive-red.svg)](https://drive.google.com/file/d/1oPhKqFStkFfacsF1el7Nq7Sai8XLWLgj/view?usp=drive_link)
 [![Python Version](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue.svg)](pyproject.toml)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](pyproject.toml)
 [![Cross-Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#3-technology-stack)
@@ -9,6 +10,12 @@
 AutoReport is a production-grade, CLI-driven report automation and analytics generator developed in Python. It ingests data across diverse formats (CSV, Excel, JSON, SQLite, REST API), performs rigorous statistical, trend, and anomaly analysis, creates publication-quality visualizations, and produces responsive **HTML** (with interactive, zero-dependency offline Plotly figures) and paginated **PDF** reports (with ReportLab and static charts) driven entirely by declarative YAML templates.
 
 Developed for the **Code A Nova 15-Day Python Development Internship**.
+
+> ### 🎥 Project Demonstration Video
+> - **Video Link**: [AutoReport 5-Minute Demonstration Video (Google Drive)](https://drive.google.com/file/d/1oPhKqFStkFfacsF1el7Nq7Sai8XLWLgj/view?usp=drive_link)
+> - **Presenter**: Harshadeep Bezawada
+> 
+> *Notice: If the Google Drive video preview does not load or stream directly in your browser, please try opening the link in a different web browser (e.g., Google Chrome or Microsoft Edge) or click the **Download** button in Google Drive to view the video file locally.*
 
 ---
 
@@ -343,7 +350,7 @@ AutoReport/
 - [x] **Deliverable 4**: Generated sample reports in both PDF and HTML formats (`sample_reports/`).
 - [x] **Deliverable 5**: Complete User Guide with CLI manual and template guide (`docs/USER_GUIDE.md`).
 - [x] **Deliverable 6**: Master technical documentation & audit report (`docs/PROJECT_DOCUMENTATION.md`).
-- [x] **Deliverable 7**: Project demonstration records and sample report presentations (`demo/`, `sample_reports/`).
+- [x] **Deliverable 7**: Project demonstration video ([Google Drive](https://drive.google.com/file/d/1oPhKqFStkFfacsF1el7Nq7Sai8XLWLgj/view?usp=drive_link)) and presentation artifacts (`demo/`, `sample_reports/`).
 - [x] **Deliverable 8**: 100K-row performance benchmark verification in ~2.53s (`scripts/verify_performance.py`).
 - [x] **Deliverable 9**: 100% test coverage over 821 statements with 59 automated tests (`tests/`).
 - [x] **Deliverable 10**: Cross-platform CI matrix workflow with Ruff linting and Mypy static typing (`.github/workflows/ci.yml`) and 15-day progress log (`CHANGELOG.md`).
